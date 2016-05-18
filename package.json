@@ -1,5 +1,5 @@
 {
-  "name": "mapdemo",
+  "name": "weatherforecastdemo",
   "version": "1.0.0",
   "description": "Test task",
   "main": "app.js",
