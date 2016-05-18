@@ -3,15 +3,14 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Map Demo</title>
+  <title>Weather Demo</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+  <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+  <!-- <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" /> -->
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
@@ -19,60 +18,167 @@
   <!-- endbuild -->
 </head>
 <style>
+  .margin-clear {
+    margin: 0 !important;
+  }
 
-  @media all and (max-width: 960px) {
-    .map-container {
-      height: 400px;
-    }
+  body {
+    background: #f2f2f2;
+  }
 
+  .page-header {
+    border-color: #ddd;
+  }
+
+  .card {
+    padding: 10px;
+    background: #fff;
+    color: #777;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+  }
+
+  .card .title {
+    margin-top:0;
+  }
+
+  .card .title small{
+    font-weight: 800;
+  }
+
+  .card li{
+    border-bottom: 1px solid #eee;
+  }
+
+  a:hover, a:visited, a:link, a:active{
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .card li:first-child{
+      border-top: 1px solid #eee;
+  }
+
+  .card li > a{
+    padding: 5px;
+    display: block;
+    color: #777;
+  }
+
+  .purple-border-color {
+    border-left: 3px solid #7300b7;
+  }
+
+  .green-border-color {
+    border-left: 3px solid #81cf47;
+  }
+
+  .orange-border-color {
+    border-left: 3px solid #f8a80b;
   }
 </style>
 
-<body ng-app="mapDemoApp" ng-cloak layout="column" ng-controller="DemoAppCtrl">
+<body ng-app="weatherDemoApp" ng-cloak ng-controller="WeatherDemoCtrl">
   <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
   <!-- Add your site or application content here -->
-  <md-toolbar class="md-primary">
-    <div class="md-toolbar-tools">
-      <h2>
-          <span>Map Demo</span>
-        </h2>
-      <span flex></span>
-      <md-button class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="cached"></md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-content layout="row" layout-sm="column" flex>
-    <md-card flex-gt-sm="65" class="map-container">
-      <!-- <leaflet-map></leaflet-map> -->
-      <leaflet lf-center="london" layers="layers" markers="markers" width="100%" height="{{mapHeight}}" event-broadcast="events"></leaflet>
-    </md-card>
-    <md-card flex>
-      <div class="mdc-bg-primary" style=" height: 100px; background:#66BB6A;padding:10px; color:white;">
-        <h2>List</h2>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Weather Forecast</a>
       </div>
-    </md-card>
-  </md-content>
-  <!-- </div> -->
-  <!-- </div> -->
+    </div>
+  </nav>
+  <div class="row margin-clear">
+    <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+      <form class="form-horizontal">
+        <div class="form-group margin-clear">
+          <label for="citySelector" class="control-label pull-left">Select city:</label>
+          <div class="col-sm-2">
+            <select class="form-control" ng-model="location" ng-options="location.id as location.name for location in locations"></select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+      <div class="page-header">
+        <h4>Temperature</h4>
+      </div>
+
+      <hc-chart options="highchartsConfig">Placeholder for generic chart</hc-chart>
+
+    </div>
+    <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" style="margin-bottom:25px;">
+      <div class="page-header">
+        <h4>Additional Data</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="card orange-border-color">
+            <h3 class="title"><small>{{'Weather Conditions' | uppercase}}</small></h3>
+            <ul class="list-unstyled">
+              <li ng-repeat="condition in forecast | limitTo: 10">
+                <a>
+                  {{condition.dt*1000 | date:'MMM d, HH:mm'}}
+                  <span class="pull-right">{{condition.weather[0].main}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="card  green-border-color">
+            <h3 class="title"><small>{{'Humidity' | uppercase}}</small></h3>
+            <ul class="list-unstyled">
+              <li ng-repeat="condition in forecast | offset: 10 | limitTo: 10 ">
+                <a>
+                {{condition.dt*1000 | date:'MMM d, HH:mm'}}
+                <span class="pull-right">{{condition.main.humidity | percentage}}</span>
+              </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="card  purple-border-color">
+            <h3 class="title"><small>{{'Wind speed' | uppercase}}</small></h3>
+            <ul class="list-unstyled">
+              <li ng-repeat="condition in forecast | offset: 20 | limitTo: 10">
+                <a>
+                {{condition.dt*1000 | date:'MMM d, HH:mm'}}
+                <span class="pull-right">{{condition.wind.speed | formatter:'m/s'}}</span>
+              </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- build:js(.) scripts/vendor.js -->
   <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-material/angular-material.js"></script>
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
-  <script src="bower_components/angular-aria/angular-aria.js"></script>
-  <script src="bower_components/angular-messages/angular-messages.js"></script>
-  <script src="bower_components/leaflet/dist/leaflet.js"></script>
-  <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/highcharts/highcharts.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+
 
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="scripts/app.js"></script>
+
   <!-- endbuild -->
 </body>
 
