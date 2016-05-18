@@ -1,0 +1,64 @@
+<div class="row margin-clear">
+  <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+    <form class="form-horizontal">
+      <div class="form-group margin-clear">
+        <label for="citySelector" class="control-label pull-left">Select city:</label>
+        <div class="col-sm-2">
+          <select class="form-control" ng-model="location" ng-options="location.id as location.name for location in locations"></select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+    <div class="page-header">
+      <h4>Temperature</h4>
+    </div>
+    <hg-chart options="highchartsConfig">Placeholder for generic chart</hg-chart>
+  </div>
+  <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 mb-25">
+    <div class="page-header">
+      <h4>Additional Data</h4>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="card orange-border-color">
+          <h3 class="title"><small>{{'Weather Conditions' | uppercase}}</small></h3>
+          <ul class="list-unstyled">
+            <li ng-repeat="condition in forecast | limitTo: 10">
+              <a>
+                {{condition.dt*1000 | date:'MMM d, HH:mm'}}
+                <span class="pull-right">{{condition.weather[0].main}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="card  green-border-color">
+          <h3 class="title"><small>{{'Humidity' | uppercase}}</small></h3>
+          <ul class="list-unstyled">
+            <li ng-repeat="condition in forecast | offset: 10 | limitTo: 10 ">
+              <a>
+              {{condition.dt*1000 | date:'MMM d, HH:mm'}}
+              <span class="pull-right">{{condition.main.humidity | percentage}}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="card  purple-border-color">
+          <h3 class="title"><small>{{'Wind speed' | uppercase}}</small></h3>
+          <ul class="list-unstyled">
+            <li ng-repeat="condition in forecast | offset: 20 | limitTo: 10">
+              <a>
+              {{condition.dt*1000 | date:'MMM d, HH:mm'}}
+              <span class="pull-right">{{condition.wind.speed | formatter:'m/s'}}</span>
+            </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

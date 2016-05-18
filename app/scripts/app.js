@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('weatherDemoApp', ['ngResource'])
+  .module('weatherDemoApp', [])
   .filter('percentage', ['$filter', function($filter) {
     return function(input, decimals) {
       return $filter('number')(input, decimals) + '%';
@@ -21,19 +21,86 @@ angular
       return [];
     };
   })
-  .factory('WeatherService', ['$resource',
-    function($resource) {
-      return $resource('http://api.openweathermap.org/data/2.5/forecast', {
-        APPID: '333703333f3f4a53cd3c3866fe0057ca',
-        units: 'metric'
+  .factory('WeatherService', ['$filter', '$http',
+    function($filter, $http) {
+      var config = {
+        chart: {
+          type: 'column',
+          marginTop: 45
+        },
+        title: {
+          text: ''
+        },
+        yAxis: {
+          title: {
+            text: ''
+          }
+        },
+        xAxis: {
+          labels: {
+            rotation: -45,
+            formatter: function() {
+              return $filter('date')(this.value, 'MMM d, HH:mm');
+            }
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{point.x: %b %d, %H:%M}</span><br>',
+          pointFormat: '<span>Temperature</span>: <b>{point.y: .0f}</b><br/>'
+        },
+        series: [{
+          pointWidth: 55,
+          data: []
+        }]
+      };
+
+      var locations = [{
+        id: 702550,
+        name: 'Lviv',
+        lat: 49.838261,
+        lng: 24.023239,
+        code: 'UA'
       }, {
-        get: {
-          method: 'GET'
+        id: 703448,
+        name: 'Kiev',
+        lat: 50.433334,
+        lng: 30.516666,
+        code: 'UA'
+      }, {
+        id: 698740,
+        name: 'Odessa',
+        lat: 46.477474,
+        lng: 30.732622,
+        code: 'UA'
+      }];
+
+      return {
+        getLocations: function() {
+          return locations;
+        },
+        getChartConfig: function() {
+          return config;
+        },
+        randomLocation: function(){
+          var index = Math.floor(Math.random()*3);
+          return locations[index].id;
+        },
+        requestData: function(location) {
+          return $http.get('http://api.openweathermap.org/data/2.5/forecast', {
+            params: {
+              APPID: '333703333f3f4a53cd3c3866fe0057ca',
+              units: 'metric',
+              id: location
+            }
+          });
         }
-      });
+      };
     }
   ])
-  .directive('hcChart', function() {
+  .directive('hgChart', function() {
     return {
       restrict: 'E',
       template: '<div></div>',
@@ -47,38 +114,18 @@ angular
         scope.$watch(function() {
           return scope.options.series[0].data;
         }, function(newValue) {
-          console.log('redraw', newValue);
           chart.series[0].setData(newValue);
-        }, true)
+        }, true);
       }
     };
   })
-  .controller('WeatherDemoCtrl', ['$scope', '$timeout', '$filter', 'WeatherService', function($scope, $timeout, $filter, WeatherService) {
-    $scope.locations = [{
-      id: 702550,
-      name: 'Lviv',
-      lat: 49.838261,
-      lng: 24.023239,
-      code: 'UA'
-    }, {
-      id: 703448,
-      name: 'Kiev',
-      lat: 50.433334,
-      lng: 30.516666,
-      code: 'UA'
-    }, {
-      id: 698740,
-      name: 'Odessa',
-      lat: 46.477474,
-      lng: 30.732622,
-      code: 'UA'
-    }];
+  .controller('WeatherDemoCtrl', ['$scope', 'WeatherService', function($scope, WeatherService) {
+    $scope.locations = WeatherService.getLocations();
+    $scope.location = WeatherService.randomLocation();
+    $scope.highchartsConfig = WeatherService.getChartConfig();
 
     $scope.$watch('location', function(id) {
-      WeatherService.get({
-        id: id
-      }).$promise.then(function(resp) {
-        console.log('resp', resp);
+      WeatherService.requestData(id).success(function(resp) {
         $scope.forecast = resp.list;
 
         $scope.highchartsConfig.series[0].data = resp.list
@@ -92,44 +139,4 @@ angular
           });
       });
     });
-
-    $scope.location = 702550;
-
-
-
-    $scope.highchartsConfig = {
-      chart: {
-        type: 'column',
-        marginTop: 45
-      },
-      title: {
-        text: ''
-      },
-      yAxis: {
-        title: {
-          text: ''
-        }
-      },
-      xAxis: {
-        labels: {
-          rotation: -45,
-          formatter: function() {
-            console.log('for', this.value);
-            return $filter('date')(this.value, 'MMM d, HH:mm');
-          }
-        }
-      },
-      legend: {
-        enabled: false
-      },
-      tooltip: {
-        headerFormat: '<span style="font-size:11px">{point.x: %b %d, %H:%M}</span><br>',
-        pointFormat: '<span>Temperature</span>: <b>{point.y: .0f}</b><br/>'
-      },
-      series: [{
-        pointWidth: 55,
-        data: []
-      }]
-    };
-
   }]);

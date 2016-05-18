@@ -14,7 +14,6 @@
   "dependencies": {
     "angular": "~1.5.5",
     "bootstrap": "~3.3.6",
-    "highcharts": "~4.2.5",
-    "angular-resource": "~1.5.5"
+    "highcharts": "~4.2.5"
   }
 }

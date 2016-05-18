@@ -1,0 +1,51 @@
+body {
+  background: #f2f2f2;
+}
+a:hover, a:visited, a:link, a:active {
+  cursor: pointer;
+  text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+.margin-clear {
+  margin: 0 !important;
+}
+.mb-25 {
+  margin-bottom: 25px;
+}
+.page-header {
+  border-color: #ddd;
+}
+.card {
+  padding: 10px;
+  background: #fff;
+  color: #777;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+}
+.card .title {
+  margin-top: 0;
+}
+.card .title small {
+  font-weight: 800;
+}
+.card li {
+  border-bottom: 1px solid #eee;
+}
+.card li:first-child {
+  border-top: 1px solid #eee;
+}
+.card li > a {
+  padding: 5px;
+  display: block;
+  color: #777;
+}
+.purple-border-color {
+  border-left: 3px solid #7300b7;
+}
+.green-border-color {
+  border-left: 3px solid #81cf47;
+}
+.orange-border-color {
+  border-left: 3px solid #f8a80b;
+}
