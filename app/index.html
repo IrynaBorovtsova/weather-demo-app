@@ -19,9 +19,7 @@
   <!-- endbuild -->
 </head>
 <style>
-  .map-container{
-    position: relative;
-  }
+
   @media all and (max-width: 960px) {
     .map-container {
       height: 400px;
@@ -30,7 +28,7 @@
   }
 </style>
 
-<body ng-app="mapDemoApp" ng-cloak layout="column">
+<body ng-app="mapDemoApp" ng-cloak layout="column" ng-controller="DemoAppCtrl">
   <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -43,16 +41,19 @@
         </h2>
       <span flex></span>
       <md-button class="md-icon-button" aria-label="More">
-        <md-icon md-font-icon="icon-cached"></md-icon>
+        <md-icon md-svg-icon="cached"></md-icon>
       </md-button>
     </div>
   </md-toolbar>
-  <md-content layout="row" layout-sm="column" flex layout-margin>
+  <md-content layout="row" layout-sm="column" flex>
     <md-card flex-gt-sm="65" class="map-container">
-      <leaflet-map></leaflet-map>
+      <!-- <leaflet-map></leaflet-map> -->
+      <leaflet lf-center="london" layers="layers" markers="markers" width="100%" height="{{mapHeight}}" event-broadcast="events"></leaflet>
     </md-card>
     <md-card flex>
-      <h2>List</h2>
+      <div class="mdc-bg-primary" style=" height: 100px; background:#66BB6A;padding:10px; color:white;">
+        <h2>List</h2>
+      </div>
     </md-card>
   </md-content>
   <!-- </div> -->
@@ -65,6 +66,7 @@
   <script src="bower_components/angular-aria/angular-aria.js"></script>
   <script src="bower_components/angular-messages/angular-messages.js"></script>
   <script src="bower_components/leaflet/dist/leaflet.js"></script>
+  <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
 
   <!-- endbower -->
   <!-- endbuild -->
