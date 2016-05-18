@@ -84,8 +84,8 @@ angular
         getChartConfig: function() {
           return config;
         },
-        randomLocation: function(){
-          var index = Math.floor(Math.random()*3);
+        randomLocation: function() {
+          var index = Math.floor(Math.random() * 3);
           return locations[index].id;
         },
         requestData: function(location) {
@@ -127,18 +127,20 @@ angular
     $scope.highchartsConfig = WeatherService.getChartConfig();
 
     $scope.$watch('current.location', function(id) {
-      WeatherService.requestData(id).success(function(resp) {
-        $scope.forecast = resp.list;
+      if (id) {
+        WeatherService.requestData(id).success(function(resp) {
+          $scope.forecast = resp.list;
 
-        $scope.highchartsConfig.series[0].data = resp.list
-          .slice(0, 10)
-          .map(function(item) {
-            return {
-              color: '#637a8a',
-              y: parseFloat(item.main.temp),
-              x: item.dt * 1000
-            };
-          });
-      });
+          $scope.highchartsConfig.series[0].data = resp.list
+            .slice(0, 10)
+            .map(function(item) {
+              return {
+                color: '#637a8a',
+                y: parseFloat(item.main.temp),
+                x: item.dt * 1000
+              };
+            });
+        });
+      }
     });
   }]);
