@@ -5,8 +5,14 @@ a:hover, a:visited, a:link, a:active {
   cursor: pointer;
   text-decoration: none;
 }
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
 .margin-clear {
   margin: 0 !important;
+}
+.mb-25 {
+  margin-bottom: 25px;
 }
 .page-header {
   border-color: #ddd;
