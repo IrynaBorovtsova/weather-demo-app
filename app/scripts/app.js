@@ -122,7 +122,7 @@ angular
   .controller('WeatherDemoCtrl', ['$scope', 'WeatherService', function($scope, WeatherService) {
     $scope.locations = WeatherService.getLocations();
     $scope.current = {
-      location: WeatherService.randomLocation
+      location: WeatherService.randomLocation()
     };
     $scope.highchartsConfig = WeatherService.getChartConfig();
 
