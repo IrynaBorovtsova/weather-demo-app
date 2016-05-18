@@ -121,10 +121,12 @@ angular
   })
   .controller('WeatherDemoCtrl', ['$scope', 'WeatherService', function($scope, WeatherService) {
     $scope.locations = WeatherService.getLocations();
-    $scope.location = WeatherService.randomLocation();
+    $scope.current = {
+      location: WeatherService.randomLocation
+    };
     $scope.highchartsConfig = WeatherService.getChartConfig();
 
-    $scope.$watch('location', function(id) {
+    $scope.$watch('current.location', function(id) {
       WeatherService.requestData(id).success(function(resp) {
         $scope.forecast = resp.list;
 

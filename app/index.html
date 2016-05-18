@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 </head>
-<body ng-cloak ng-app="weatherDemoApp">
+<body ng-cloak ng-app="weatherDemoApp" ng-controller="WeatherDemoCtrl">
   <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -35,7 +35,7 @@
       </div>
     </div>
   </nav>
-  <div data-ng-include="'templates/layout.html'""></div>
+  <div data-ng-include="'templates/layout.html'"></div>
 
   <!-- build:js(.) scripts/vendor.js -->
   <!-- bower:js -->

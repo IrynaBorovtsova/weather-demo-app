@@ -1,10 +1,10 @@
-<div class="row margin-clear" ng-controller="WeatherDemoCtrl">
+<div class="row margin-clear">
   <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
     <form class="form-horizontal">
       <div class="form-group margin-clear">
         <label for="citySelector" class="control-label pull-left">Select city:</label>
         <div class="col-sm-2">
-          <select class="form-control" ng-model="location" ng-options="location.id as location.name for location in locations"></select>
+          <select class="form-control" ng-model="current.location" ng-options="location.id as location.name for location in locations"></select>
         </div>
       </div>
     </form>
