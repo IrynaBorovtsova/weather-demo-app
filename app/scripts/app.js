@@ -18,25 +18,25 @@ angular
         lng: -71.0587,
         zoom: 15
       },
-      // layers: {
-      //   baselayers: {
-      //     googleTerrain: {
-      //       name: 'Google Terrain',
-      //       layerType: 'TERRAIN',
-      //       type: 'google'
-      //     },
-      //     googleHybrid: {
-      //       name: 'Google Hybrid',
-      //       layerType: 'HYBRID',
-      //       type: 'google'
-      //     },
-      //     googleRoadmap: {
-      //       name: 'Google Streets',
-      //       layerType: 'ROADMAP',
-      //       type: 'google'
-      //     }
-      //   }
-      // },
+      layers: {
+        baselayers: {
+          googleTerrain: {
+            name: 'Google Terrain',
+            layerType: 'TERRAIN',
+            type: 'google'
+          },
+          googleHybrid: {
+            name: 'Google Hybrid',
+            layerType: 'HYBRID',
+            type: 'google'
+          },
+          googleRoadmap: {
+            name: 'Google Streets',
+            layerType: 'ROADMAP',
+            type: 'google'
+          }
+        }
+      },
       defaults: {
         tileLayer: 'http://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token={token}',
         tileLayerOptions: {
